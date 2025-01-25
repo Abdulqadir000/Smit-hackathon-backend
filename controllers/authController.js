@@ -6,8 +6,9 @@ export const signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    // Create a new user
     const newUser = new UserModal({
       name,
       email,
@@ -16,8 +17,26 @@ export const signup = async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: "User registered successfully" });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newUser._id, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // Return user data and token
+    res.status(201).json({
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
   } catch (error) {
+    console.error("Error registering user:", error);
     res.status(500).json({ message: "Error registering user", error });
   }
 };
@@ -45,7 +64,16 @@ export const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ token, role: user.role });
+    // Send user data and token in the response
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ message: "Error logging in", error: error.message });
