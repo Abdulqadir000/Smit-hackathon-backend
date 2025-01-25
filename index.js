@@ -3,8 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
-import connectDB from "./lib/dbconnect.js";
-
+import connectDB from "./lib/connectDB.js";
 dotenv.config();
 
 const app = express();
