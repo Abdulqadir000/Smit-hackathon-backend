@@ -11,14 +11,14 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
   auth: {
-    user: "unnamed9080@gmail.com",
-    pass: "wrua ycat nydk ipjg",
+    user: "aabdulqadir300@gmail.com",
+    pass: "qadir11122",
   },
 });
 
 const sendEmail = async (to, subject, text) => {
   const mailOptions = {
-    from: `<unnamed9080@gmail.com>`,
+    from: `<aabdulqadir300@gmail.com>`,
     to,
     subject,
     text,
